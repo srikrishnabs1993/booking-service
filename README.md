@@ -1,8 +1,8 @@
 **Prerequisites**
 
-- JDK 8
+- JDK 21
 - IntelliJ (recommended) or your favorite Java IDE
-- Bash environment with installed 'curl' or Postman
+- Recommended: Bash environment with installed 'curl' or Postman for testing
 
 **Preamble**
      
@@ -46,19 +46,9 @@ Basically something you wouldn't be too embarrassed to push to production.
 
 **POST /bookingservice/bookings**
 
-Sample Body:
-```
-{"description": "Cool description!", "price": 50.00, "currency": USD, "subscription_start_date": 683124845000, "email": "valid@email.ok", "department": "cool department"}
-```
-
 Creates a new booking and sends an e-mail with the details.
 
 **PUT /bookingservice/bookings/{booking_id}**
-
-Sample Body:
-```
-{"description": "Cool description!", "price": 50.00, "currency": USD, "subscription_start_date": 683124845000, "email": "valid@email.ok", "department": "another_department" }
-```
 
 Insert, replace if already exists a booking.
 
@@ -82,5 +72,4 @@ Returns the sum of all bookings prices with the given currency.
 
 Returns the result of `doBusiness()` for the given booking corresponding department.
 
-**Input / Output Examples:**
 
