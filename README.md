@@ -1,75 +1,253 @@
-**Prerequisites**
+Booking Service
+===============
 
-- JDK 21
-- IntelliJ (recommended) or your favorite Java IDE
-- Recommended: Bash environment with installed 'curl' or Postman for testing
+Overview
+--------
 
-**Preamble**
-     
-Your mission would you decide to accept it:
+The **Booking Service** is a RESTful API that allows for the management of bookings across various departments such as Sales, IT, and Support. The service provides endpoints to create, update, retrieve, and process bookings. It also includes features for fetching all unique currencies used in bookings and calculating the total sum of prices for bookings in a specific currency.
 
-As part of the multi-disciplinary development elite team **PIT** in Statista you are creating software to alleviate the 
-issues from our Sales team. For this, a new requirement has been raised to implement a RESTful web service that stores 
-_booking_ objects in memory and return information about them.
+Installation
+------------
 
-Note: A _booking_ is a request from any of our beloved customers to acquire one of our products. 
+1.  **Clone the repository:**
 
-**Challenge**
+    bash
 
-The module **code-challenge** already contains the basic structure of a Spring Boot application for you.
+    Copy code
 
-The bookings to be stored have the following fields:
- - booking_id
- - description
- - price
- - currency
- - subscription_start_date
- - email
- - department
+    `git clone https://github.com/yourusername/bookingservice.git
+    cd bookingservice`
 
-Please define as many departments as you will like, and create a unique method `doBusiness()` for each department. This 
-is your time to shine, so the method implementations can be as simple, elegant, or complicated as you want. 
+2.  **Build the project using Maven:**
 
-Feel free to select the best data type that, in your opinion, would define those fields the best.
+    bash
 
-You should not use a database or some other sort of persistence but come up with an own data structure to store the 
-transactions.
+    Copy code
 
-In any moment where the implementation implies the usage of an external server (i.e. sending e-mail's) feel free to mock
-creatively these external resources, keeping in mind that all real-world use-cases must be covered.
+    `mvn clean install`
 
-In general, we are looking for a good implementation, code quality, code resilience, code extensibility, code 
-maintainability and how the implementation is tested.
-Basically something you wouldn't be too embarrassed to push to production.
+3.  **Run the application:**
 
-**API Specification:**
+    bash
 
-**POST /bookingservice/bookings**
+    Copy code
 
-Creates a new booking and sends an e-mail with the details.
+    `mvn spring-boot:run`
 
-**PUT /bookingservice/bookings/{booking_id}**
+Running the Application
+-----------------------
 
-Insert, replace if already exists a booking.
+The application can be run using Maven or your preferred IDE (e.g., IntelliJ, Eclipse). Ensure that all dependencies are correctly installed and the project is properly built.
 
-**GET /bookingservice/bookings/{booking_id}**
+Once the application is running, the API will be accessible at `http://localhost:8080/bookingservice`.
 
-Returns the specified booking as JSON.
+API Endpoints
+-------------
 
-**GET /bookingservice/bookings/department/{department}**
+### Create a Booking
 
-Returns a JSON list of all bookings ids with the given department.
+-   **URL:** `/bookingservice/bookings`
 
-**GET /bookingservice/bookings/currencies**
+-   **Method:** `POST`
 
-Returns a JSON list with all used currencies in the existing bookings.
+-   **Request Body:**
 
-**GET /bookingservice/sum/{currency}**
+    json
 
-Returns the sum of all bookings prices with the given currency.
+    Copy code
 
-**GET /bookingservice/bookings/dobusiness/{booking_id}**
+    `{
+      "bookingId": "1",
+      "description": "Test Booking",
+      "price": 100.0,
+      "currency": "USD",
+      "subscriptionStartDate": "2023-01-01",
+      "email": "test@example.com",
+      "department": "sales"
+    }`
 
-Returns the result of `doBusiness()` for the given booking corresponding department.
+-   **Response:**
 
+    -   **201 Created**
+-   **cURL Example:**
 
+    bash
+
+    Copy code
+
+    `curl -X POST http://localhost:8080/bookingservice/bookings   -H "Content-Type: application/json"   -d '{
+          "bookingId": "1",
+          "description": "Test Booking",
+          "price": 100.0,
+          "currency": "USD",
+          "subscriptionStartDate": "2023-01-01",
+          "email": "test@example.com",
+          "department": "sales"
+        }'`
+
+### Update a Booking
+
+-   **URL:** `/bookingservice/bookings/{bookingId}`
+
+-   **Method:** `PUT`
+
+-   **Request Body:** (same as above)
+
+-   **Response:**
+
+    -   **200 OK**
+-   **cURL Example:**
+
+    bash
+
+    Copy code
+
+    `curl -X PUT http://localhost:8080/bookingservice/bookings/1   -H "Content-Type: application/json"   -d '{
+          "bookingId": "1",
+          "description": "Updated Booking",
+          "price": 150.0,
+          "currency": "EUR",
+          "subscriptionStartDate": "2023-02-01",
+          "email": "updated@example.com",
+          "department": "support"
+        }'`
+
+### Get a Booking by ID
+
+-   **URL:** `/bookingservice/bookings/{bookingId}`
+
+-   **Method:** `GET`
+
+-   **Response:**
+
+    -   **200 OK**
+    -   **404 Not Found**
+-   **cURL Example:**
+
+    bash
+
+    Copy code
+
+    `curl -X GET http://localhost:8080/bookingservice/bookings/1`
+
+### Get Bookings by Department
+
+-   **URL:** `/bookingservice/bookings/department/{department}`
+
+-   **Method:** `GET`
+
+-   **Response:**
+
+    -   **200 OK**
+    -   **404 Not Found**
+-   **cURL Example:**
+
+    bash
+
+    Copy code
+
+    `curl -X GET http://localhost:8080/bookingservice/bookings/department/sales`
+
+### Get All Currencies
+
+-   **URL:** `/bookingservice/bookings/currencies`
+
+-   **Method:** `GET`
+
+-   **Response:**
+
+    -   **200 OK**
+-   **cURL Example:**
+
+    bash
+
+    Copy code
+
+    `curl -X GET http://localhost:8080/bookingservice/bookings/currencies`
+
+### Get Sum by Currency
+
+-   **URL:** `/bookingservice/sum/{currency}`
+
+-   **Method:** `GET`
+
+-   **Response:**
+
+    -   **200 OK**
+-   **cURL Example:**
+
+    bash
+
+    Copy code
+
+    `curl -X GET http://localhost:8080/bookingservice/sum/USD`
+
+### Process a Booking
+
+-   **URL:** `/bookingservice/bookings/dobusiness/{bookingId}`
+
+-   **Method:** `GET`
+
+-   **Response:**
+
+    -   **200 OK**
+    -   **400 Bad Request** (if department is unknown)
+    -   **404 Not Found** (if booking is not found)
+-   **cURL Example:**
+
+    bash
+
+    Copy code
+
+    `curl -X GET http://localhost:8080/bookingservice/bookings/dobusiness/1`
+
+Error Handling
+--------------
+
+The API uses centralized exception handling to provide consistent error responses. The following HTTP status codes are commonly returned:
+
+-   **400 Bad Request:** Returned for validation errors or when a department is unknown.
+-   **404 Not Found:** Returned when a requested booking or resource is not found.
+-   **500 Internal Server Error:** Returned for any unexpected server errors.
+
+Testing
+-------
+
+Unit tests are included in the project and can be run using Maven:
+
+bash
+
+Copy code
+
+`mvn test`
+
+The tests cover the service layer, repository layer, and controller endpoints.
+
+Components Description
+----------------------
+
+### Controller Layer
+
+-   **BookingController.java:** Handles HTTP requests and routes them to the appropriate service methods. This layer is responsible for interacting with the client, handling input validation, and returning appropriate HTTP responses.
+
+### Service Layer
+
+-   **BookingService.java:** Contains the business logic for handling bookings. It interacts with the repository layer to store, retrieve, and process bookings. It also includes the logic for delegating business operations to the correct department service.
+
+-   **DepartmentService.java:** An interface defining the contract for department-specific business logic.
+
+-   **ITDepartmentService.java, SalesDepartmentService.java, SupportDepartmentService.java:** Implementations of `DepartmentService` that provide specific business logic for each department.
+
+### Repository Layer
+
+-   **BookingRepository.java:** Manages the in-memory storage of bookings. This layer is responsible for adding, updating, retrieving, and deleting booking data.
+
+### Exception Handling
+
+-   **GlobalExceptionHandler.java:** A centralized exception handler that catches and processes exceptions thrown by the application. It ensures that consistent error responses are returned to the client for various error scenarios, such as validation errors, booking not found, or unexpected server errors.
+
+-   **BookingNotFoundException.java, DepartmentNotFoundException.java:** Custom exceptions that are thrown when a booking or department is not found, respectively.
+
+### Model Layer
+
+-   **Booking.java:** Represents the booking entity with fields such as `bookingId`, `description`, `price`, `currency`, `subscriptionStartDate`, `email`, and `department`. This class also includes validation annotations to enforce business rules.

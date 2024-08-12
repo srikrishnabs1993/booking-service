@@ -1,11 +1,11 @@
-package com.statista.code.challenge;
+package com.statista.code.challenge.bookingservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class App {
+public class BookingServiceApplication {
     public static void main(String[] args) {
-        SpringApplication.run(App.class, args);
+        SpringApplication.run(BookingServiceApplication.class, args);
     }
 }
